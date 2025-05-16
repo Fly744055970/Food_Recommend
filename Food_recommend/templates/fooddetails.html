@@ -1,0 +1,374 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div class="page-content">
+
+        <!-- Page-Title -->
+        <div class="page-title-box">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 class="page-title mb-1">美食详情</h4>
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="/myhome/index/">主页</a></li>
+                            <li class="breadcrumb-item active">{{ foodinfo.foodname }}</li>
+                        </ol>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- product-main-area-start -->
+        <div class="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-10" style="margin: 0 auto; width: 80%;">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12">
+                                        <div class="flexslider">
+                                            <ul class="gallery-overlay">
+
+                                                <img src="{{ foodinfo.imgurl }}" alt="food"
+                                                     class="gallery-demo-img img-fluid mx-auto"/>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12">
+                                        <div class="product-info-main">
+                                            <div class="page-title mb-3">
+                                                <h1>{{ foodinfo.foodname }}</h1>
+                                            </div>
+
+                                            <div class="product-reviews-summary mb-3">
+                                                <div class="rating-summary d-flex">
+                                                    <a href="#" class="mr-1">
+                                                        <i class="fa fa-star"></i>
+                                                    </a>
+                                                    <a href="#" class="mr-1">
+                                                        <i class="fa fa-star"></i>
+                                                    </a>
+                                                    <a href="#" class="mr-1">
+                                                        <i class="fa fa-star"></i>
+                                                    </a>
+                                                    <a href="#" class="mr-1">
+                                                        <i class="fa fa-star"></i>
+                                                    </a>
+                                                    <a href="#" class="mr-1">
+                                                        <i class="fa fa-star"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <div class="product-social-links mb-3">
+                                                <div class="product-addto-links-text d-flex align-items-center">
+                                                    <span class="font-weight-bold text-dark">菜系：</span>
+                                                    <span class="ml-2 text-secondary">{{ foodinfo.foodtype }}</span>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="product-info-price mb-3">
+                                                <div class="price-final">
+                                                    <span style="font-family: 'Xoric', sans-serif; font-size: 15px; font-weight: 600; color: #229cff;">
+                                                        ¥{{ foodinfo.price|floatformat:2 }}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="product-add-form mb-3">
+                                                <form action="" class="d-flex align-items-center justify-content-start">
+                                                    {#                                                    <!-- 购物车图标按钮，放在左侧 -->#}
+                                                    {#                                                    <a id="addcart" href="javascript:void(0);"#}
+                                                    {#                                                       class="btn btn-primary mr-2">#}
+                                                    {#                                                        <i class="fas fa-shopping-cart"></i>#}
+                                                    {#                                                    </a>#}
+
+                                                    <!-- 收藏图标按钮，放在右侧 -->
+                                                    {#                                                    <span>点击收藏：</span>#}
+                                                    <a id="addwishlist" href="javascript:void(0);"
+                                                       class="btn {% if is_wishlist %}btn-danger{% else %}btn-secondary{% endif %}"
+                                                       data-is-wishlist="{% if is_wishlist %}true{% else %}false{% endif %}">
+                                                        <i class="fas fa-heart"></i>
+                                                    </a>
+
+                                                </form>
+                                            </div>
+
+                                            {#                                            <div class="product-social-links">#}
+                                            {#                                                <div class="product-addto-links-text">#}
+                                            {#                                                    <p class="mb-0">{{ foodinfo.recommend }}</p>#}
+                                            {#                                                </div>#}
+                                            {#                                            </div>#}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div><!-- product-main-area-end -->
+                            <!-- product-info-area-start -->
+                            <div class="product-info-area mt-80">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs xoric-tabs border-bottom mb-4 pb-2" role="tablist">
+                                    <li class="nav-item">
+                                        <a href="#Details" class="nav-link active font-weight-bold" data-toggle="tab">美食详情</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#Reviews" class="nav-link font-weight-bold" data-toggle="tab">评论</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content xoric-tab-content p-3 border rounded">
+                                    <!-- 商品详情 -->
+                                    <div class="tab-pane active" id="Details">
+                                        <div class="valu mb-4">
+                                            <p class="text-muted">
+                                                {% autoescape off %}
+                                                    {{ foodinfo.fooddetail }}
+                                                {% endautoescape %}
+                                            </p>
+                                        </div>
+
+                                        <!-- 商品推荐部分 -->
+                                        <div class="product-social-links bg-light p-3 rounded border">
+                                            <div class="product-addto-links-text">
+                                                <p class="mb-0 text-secondary">{{ foodinfo.recommend }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 用户评论 -->
+                                    <div class="tab-pane" id="Reviews">
+                                        <div class="valu valu-2">
+                                            <div class="section-title mb-4">
+                                                <h3 class="font-weight-bold text-dark">评论</h3>
+                                            </div>
+                                            <ul class="product-social-links list-unstyled bg-light p-3 rounded border">
+                                                {% for comment in commentlist %}
+                                                    <li class="mb-3 p-3 border rounded bg-white">
+                                                        <div class="review-right">
+                                                            <!-- 评论者和评论内容 -->
+                                                            <div class="review-details mb-2">
+                                                                <span class="font-weight-bold text-dark">{{ comment.realname }}</span>:
+                                                                <span class="ml-2 text-secondary">{{ comment.conten }}</span>
+                                                            </div>
+                                                            <!-- 评论时间 -->
+                                                            <div class="review-time small text-muted">
+                                                                评论时间：{{ comment.ctime }}
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+
+
+                                            <!-- 发表评论部分 -->
+                                            <div class="review-add mt-4">
+                                                <h4 class="font-weight-bold">发表你的意见:</h4>
+                                            </div>
+                                            <form id="commentForm" action="{% url 'myhome_comment' foodinfo.id %}"
+                                                  method="POST" class="pt-3">
+                                                {% csrf_token %}
+                                                <div class="review-form d-flex align-items-center">
+                                                    <!-- 评论输入框 -->
+                                                    <div class="single-form flex-grow-1 mb-0 mr-3">
+            <textarea name="comment" id="commentText" class="form-control border" rows="1"
+                      placeholder="写下你的评论..." required></textarea>
+                                                    </div>
+                                                    <!-- 提交按钮 -->
+                                                    <div class="review-form-button">
+                                                        <button type="submit" class="btn btn-primary">
+                                                            <i class="fas fa-paper-plane"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="shop-left">
+                                <div class="left-title mb-20">
+                                    <h4>相关菜品</h4>
+                                </div>
+                                <div class="random-area mb-30">
+                                    <div class="row container-grid projects-wrapper" id="scrollable-container">
+                                        {% for food in foodtypes %}
+                                            <div class="col-xl-1 branding development food-item">
+                                                <div class="gallery-box mt-4">
+                                                    <a class="gallery-popup"
+                                                       href="{% url 'myhome_fooddetail' food.id %}"
+                                                       onclick="window.location.href=this.href; return false;" title="">
+                                                        <img class="gallery-demo-img img-fluid mx-auto"
+                                                             src="{{ food.imgurl }}" alt="{{ food.foodname }}">
+                                                        <div class="gallery-overlay">
+                                                            <div class="overlay-content">
+                                                                <h5 class="overlay-title"
+                                                                    style="font-size: 12px; color: #fff; max-width: 100%; text-align: left; padding-left: 5px;">
+                                                                    {{ food.foodname }}
+                                                                </h5>
+
+                                                                <p class="text-uppercase mb-0">{{ food.foodtype }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div><!-- product-main-area-end -->
+        </div>
+    </div>
+
+
+    <script>
+        document.getElementById("commentForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // 阻止表单默认提交行为
+
+            const commentText = document.getElementById("commentText").value;
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            const url = this.action;
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": csrfToken
+                },
+                body: new URLSearchParams({
+                    "comment": commentText
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        addCommentToList(data.realname, data.comment, data.ctime);
+                        document.getElementById("commentText").value = ''; // 清空输入框
+                    } else {
+                        alert("评论提交失败，请重试！");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        // 抽象出添加评论的函数
+        function addCommentToList(username, comment, time) {
+            const commentList = document.querySelector(".valu-2 ul");
+
+            // 创建评论项的模板字符串，简化HTML结构
+            const commentHTML = `
+            <li class="mb-3 p-3 border rounded bg-white">
+                <div class="review-right">
+                    <div class="review-details mb-2">
+                        <span class="font-weight-bold text-dark">${username}</span>:
+                        <span class="ml-2 text-secondary">${comment}</span>
+                    </div>
+                    <div class="review-time small text-muted">评论时间：${time}</div>
+                </div>
+            </li>
+        `;
+            // 使用 insertAdjacentHTML 更高效地插入 HTML 片段
+            commentList.insertAdjacentHTML('beforeend', commentHTML);
+        }
+    </script>
+
+    <script>
+        // 添加事件监听器，处理收藏和取消收藏的点击事件
+        document.addEventListener('DOMContentLoaded', function () {
+            var wishlistButton = document.getElementById('addwishlist');
+
+            // 从模板中预先生成收藏和取消收藏的URL
+            var addWishlistUrl = "{% url 'add_wishlist' foodinfo.id %}";
+            var removeWishlistUrl = "{% url 'remove_wishlist' foodinfo.id %}";
+
+            wishlistButton.addEventListener('click', function () {
+                var isWishlist = wishlistButton.getAttribute('data-is-wishlist') === 'true';  // 当前状态
+
+                // 根据当前收藏状态，决定请求的 URL
+                var url = isWishlist ? removeWishlistUrl : addWishlistUrl;
+
+                // 发送 AJAX 请求到后端
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'  // 发送CSRF令牌
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            // 根据响应状态更新图标和状态
+                            if (isWishlist) {
+                                wishlistButton.setAttribute('data-is-wishlist', 'false');
+                                wishlistButton.classList.remove('btn-danger');  // 取消收藏：移除亮色样式
+                                wishlistButton.classList.add('btn-secondary');  // 添加灰色样式
+                            } else {
+                                wishlistButton.setAttribute('data-is-wishlist', 'true');
+                                wishlistButton.classList.remove('btn-secondary');  // 收藏：移除灰色样式
+                                wishlistButton.classList.add('btn-danger');  // 添加亮色样式
+                            }
+                        } else {
+                            alert('操作失败，请稍后重试。');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
+
+
+
+    <script>
+        {#$("#addcart").click(function () {#}
+        {#    // 检测当前用户是否登录#}
+        {#    var uid = '{{request.session.User.id}}'#}
+        {#    console.log(uid)#}
+        {#    if (uid) {#}
+        {#        // 已经登陆#}
+        {#        // 获取商品id和数量#}
+        {#        var data = {}#}
+        {#        data.foodid = '{{ foodinfo.id }}'#}
+        {#        data.num = $(this).parents('form').find('input[name=num]').val()#}
+        {#        res = /\d+/#}
+        {#        console.log(res.test(data.num))#}
+        {#        if (data.num <= 0) {#}
+        {#            alert("数量输入错误，请输入有效的数量")#}
+        {#            $("input[name=num]").val(1)#}
+        {#            return;#}
+        {#        }#}
+        {#        // 发送数据到后台，把数据添加到购物车#}
+        {#        // 购物车里的信息#}
+        {#        // 用户id(只要登录就可以查到用户的id)#}
+        {#        // 商品id(根据点击的按钮去找寻商品id)#}
+        {#        // 数量(根据点击的按钮去获取用户选择的数量)#}
+        {#$.post('{% url "myhome_addcart" %}', data, function (data) {#}
+        {#        $.post('{% url "myhome_addcart" %}', data, function (data) {#}
+        {#            alert(data["msg"])#}
+        {#        }, 'json')#}
+        {##}
+        {#    } else {#}
+        {#        // 没有登陆#}
+        {#        alert("请先登录")#}
+        {#        location.href = "{% url 'myhome_login' %}?nextpath={{request.path}}"#}
+        {#    }#}
+        {#})
+        #}
+    </script>
+{% endblock %}
+

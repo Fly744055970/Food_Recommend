@@ -1,0 +1,113 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+
+    <script src="{% static 'js/echarts.js' %}"></script>
+    <script src="{% static 'js/echarts-wordcloud.min.js' %}"></script>
+    <div class="page-content">
+
+        <!-- Page-Title -->
+        <div class="page-title-box">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 class="page-title mb-1">词云分析</h4>
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="/myhome/index/">主页</a></li>
+                            <li class="breadcrumb-item active">词云分析</li>
+                        </ol>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- product-main-area-start -->
+        <div class="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-10" style="margin: 0 auto; width: 80%;">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label class="col-md-1 col-form-label" for="foodTypeSelect">选择类型:</label>
+                                    <div class="col-md-11">
+                                        <select id="foodTypeSelect" name="foodType" class="form-control">
+                                            <option value="全部">全部</option>
+                                            {% for food_type in food_types %}
+                                                <option value="{{ food_type }}">{{ food_type }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="wordCloudContainer" style="width: 100%; height: 600px;"></div>
+
+
+                            </div>
+                        </div>
+                    </div><!-- product-main-area-end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // 初始化词云图表
+        var chartDom = document.getElementById('wordCloudContainer');
+        var myChart = echarts.init(chartDom);
+
+        // 定义渲染词云的函数
+        function renderWordCloud(data) {
+            var option = {
+                title: {
+                    left: 'center',
+                    text: '标题词云图',
+                },
+                tooltip: {},
+                series: [{
+                    type: 'wordCloud',
+                    shape: 'circle',
+                    gridSize: 4,
+                    sizeRange: [20, 100],
+                    rotationRange: [0, 30],
+                    textStyle: {
+                        normal: {
+                            fontFamily: 'sans-serif',
+                            color: function () {
+                                return 'rgb('
+                                    + [Math.round(Math.random() * 160),
+                                        Math.round(Math.random() * 160),
+                                        Math.round(Math.random() * 160)
+                                    ].join(',') + ')';
+                            }
+                        },
+                        emphasis: {
+                            shadowBlur: 5,
+                            shadowColor: '#333'
+                        }
+                    },
+                    data: data
+                }]
+            };
+            myChart.setOption(option);
+        }
+
+        // 获取词云数据
+        function getWordCloudData(type = '全部') {
+            fetch(`/myhome/get_wordcloud_data/?type=${type}`)
+                .then(response => response.json())
+                .then(data => {
+                    renderWordCloud(data.data);
+                });
+        }
+
+        // 默认加载全部词云
+        getWordCloudData();
+
+        // 当选择框的值改变时，重新加载对应类型的词云数据
+        document.getElementById('foodTypeSelect').addEventListener('change', function () {
+            var selectedType = this.value;
+            getWordCloudData(selectedType);
+        });
+    </script>
+{% endblock %}

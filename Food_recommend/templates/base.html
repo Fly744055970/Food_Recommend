@@ -1,0 +1,176 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Mediqu - Bootstrap Admin Dashboard</title>
+    <!-- Favicon icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    {#    图片<link rel="icon" type="image/png" sizes="16x16" href="{% static 'index/images/favicon.png' %}">#}
+    <!-- Custom Stylesheet -->
+    <link href="{% static 'index/vendor/bootstrap-select/dist/css/bootstrap-select.min.css' %}" rel="stylesheet">
+    <link href="{% static 'index/css/style.css' %}" rel="stylesheet">
+</head>
+<style>
+    .submenu {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out; /* 添加过渡效果 */
+    }
+</style>
+{% block style %}
+{% endblock %}
+<body>
+
+<!--*******************
+    Preloader start
+********************-->
+<div id="preloader">
+    <div class="sk-three-bounce">
+        <div class="sk-child sk-bounce1"></div>
+        <div class="sk-child sk-bounce2"></div>
+        <div class="sk-child sk-bounce3"></div>
+    </div>
+</div>
+<!--*******************
+    Preloader end
+********************-->
+
+
+<!--**********************************
+    Main wrapper start
+***********************************-->
+<div id="main-wrapper">
+
+    <!--**********************************
+        Nav header start
+    ***********************************-->
+    <div class="nav-header">
+        <h2 class="brand-logo" style="color: black">自行修改</h2>
+        <div class="nav-control">
+            <div class="hamburger">
+                <span class="line"></span><span class="line"></span><span class="line"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="header">
+        <div class="header-content">
+            <nav class="navbar navbar-expand">
+                <div class="collapse navbar-collapse justify-content-between">
+                    <ul class="header-right">
+                        <li class="nav-item dropdown notification_dropdown">
+                            <a class="nav-link dz-fullscreen" href="#">
+                                <svg id="icon-full" viewBox="0 0 24 24" width="26" height="26" stroke="currentColor"
+                                     stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"
+                                     class="css-i6dzq1">
+                                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                                </svg>
+                                <svg id="icon-minimize" width="26" height="26" viewBox="0 0 24 24" fill="none"
+                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-minimize">
+                                    <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path>
+                                </svg>
+                            </a>
+                            <a href="{% url 'logout' %}" class="nav-link">
+                                <i class="fas fa-sign-out-alt"></i> 退出
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="deznav">
+        <div class="deznav-scroll">
+            <ul class="metismenu" id="menu">
+                <li>
+                    <a href="{% url 'index' %}" aria-expanded="false">
+                        <i class="fas fa-database"></i> 数据采集
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'index2' %}" aria-expanded="false">
+                        <i class="fas fa-broom"></i> 数据清洗
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'data_mining' %}" aria-expanded="false">
+                        <i class="fas fa-search"></i> 数据挖掘
+                    </a>
+                </li>
+                <li>
+                    <a class="has-arrow ai-icon" href="#" aria-expanded="false"
+                       onclick="toggleSubMenu(this); return false;">
+                        <i class="fas fa-chart-line"></i>
+                        <span class="nav-text">数据分析</span>
+                    </a>
+                    <ul aria-expanded="false" style="display: none;">
+                        <li><a href="{% url 'echarts1' %}"><i class="fas fa-chart-bar"></i> 可视化1</a></li>
+                        <li><a href="{% url 'echarts2' %}"><i class="fas fa-chart-pie"></i> 可视化2</a></li>
+                        <li><a href="{% url 'echarts3' %}"><i class="fas fa-chart-area"></i> 可视化3</a></li>
+                        <li><a href="{% url 'echarts4' %}"><i class="fas fa-chart-line"></i> 可视化4</a></li>
+                        <li><a href="{% url 'echarts5' %}"><i class="fas fa-chart-bar"></i> 可视化5</a></li>
+                        <li><a href="{% url 'echarts6' %}"><i class="fas fa-chart-pie"></i> 可视化6</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+
+        </div>
+    </div>
+</div>
+
+<!--**********************************
+    Sidebar end
+***********************************-->
+
+<!--**********************************
+    Content body start
+***********************************-->
+<div class="content-body">
+    <div class="container-fluid">
+
+        <!-- row -->
+
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+<!--**********************************
+    Main wrapper end
+***********************************-->
+
+<!--**********************************
+    Scripts
+***********************************-->
+<!-- Required vendors -->
+<script src="{% static 'index/vendor/global/global.min.js' %}"></script>
+<script src="{% static 'index/vendor/bootstrap-select/dist/js/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'index/vendor/chart.js/Chart.bundle.min.js' %}"></script>
+<script src="{% static 'index/js/custom.min.js' %}"></script>
+<script src="{% static 'index/js/deznav-init.js' %}"></script>
+<script src="{% static 'login/js/echarts.min.js' %}"></script>
+<!-- Apex Chart -->
+<script src="{% static 'index/vendor/apexchart/apexchart.js' %}"></script>
+<script>
+    function toggleSubMenu(element) {
+        const submenu = element.nextElementSibling; // 获取下一个兄弟元素，即子菜单
+        if (submenu) {
+            const isExpanded = element.getAttribute('aria-expanded') === 'true'; // 检查当前状态
+            submenu.style.display = isExpanded ? 'none' : 'block'; // 切换显示状态
+            element.setAttribute('aria-expanded', !isExpanded); // 更新属性状态
+            submenu.setAttribute('aria-expanded', !isExpanded); // 更新子菜单的属性状态
+        }
+    }
+</script>
+{% block script %}
+{% endblock %}
+</body>
+</html>

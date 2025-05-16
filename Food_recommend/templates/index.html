@@ -1,0 +1,239 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div class="page-content">
+
+        <!-- Page-Title -->
+        <div class="page-title-box">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 class="page-title mb-1">首页</h4>
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item active">欢迎来到美食推荐系统</li>
+                        </ol>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        <div class="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row" style="display: flex;">
+                    <!-- 欢迎部分 -->
+                    <div class="col-xl-4" style="flex: 1;">
+                        <div class="card" style="height: 100%;">
+                            <div class="card-body">
+                                <h5>欢迎回来 !</h5>
+                                <p>总用户数: {{ user_data.total_users }}</p>
+
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <div class="media my-2">
+                                        <div class="media-body">
+                                            <p class="text-muted mb-2">美食总数</p>
+                                            <h5 class="mb-0">{{ user_data.total_foods }}</h5>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="media my-2">
+                                        <div class="media-body">
+                                            <p class="text-muted mb-2">平均价格</p>
+                                            <h5 class="mb-0">￥ {{ user_data.avg_price }}</h5>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                                </div>
+                        </div>
+                    </div>
+
+                    <!-- 美食统计 -->
+                    <div class="col-lg-4" style="flex: 1;">
+                        <div class="card" style="height: 100%;">
+                            <div class="card-header bg-transparent p-3">
+                                <h5 class="header-title mb-0">用户数据统计</h5>
+                            </div>
+                            <div id="userCreationChart" style="height: 400px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- 食物类型统计 -->
+                    <div class="col-lg-4" style="flex: 1;">
+                        <div class="card" style="height: 100%;">
+                            <div class="card-header bg-transparent p-3">
+                                <h5 class="header-title mb-4">美食类型统计</h5>
+                            </div>
+                            <ul class="list-group list-group-flush" style="height: 400px; overflow-y: auto;">
+                                {% for type_stat in user_data.food_type_stats %}
+                                    <li class="list-group-item">
+                                        <div class="media my-2">
+                                            <div class="media-body">
+                                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                    <p class="text-muted mb-2">{{ type_stat.foodtype }}</p>
+                                                    <h5 class="mb-0">{{ type_stat.count }} 种</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12" style="margin-top: 20px">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="header-title mb-4">最新评论</h5>
+                            <ul class="list-group">
+                                {% for comment in latest_comments %}
+                                    <li class="list-group-item">
+                                        <p><strong>{{ comment.realname }}:</strong> {{ comment.conten }}</p>
+                                        <small class="text-muted">发表于 {{ comment.ctime }}</small>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- 收藏统计 -->
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="header-title mb-4">收藏统计</h5>
+                            <table class="table table-centered">
+                                <thead>
+                                <tr>
+                                    <th>美食图片</th>
+                                    <th>美食名称</th>
+                                    <th>类型</th>
+                                    <th>收藏次数</th>
+                                    <th>推荐语</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for stat in wishlist_stats %}
+                                    <tr>
+                                        <td>
+                                            <img src="{{ stat.food__imgurl }}" alt="{{ stat.food__foodname }}"
+                                                 width="80">
+                                        </td>
+                                        <td>{{ stat.food__foodname }}</td>
+                                        <td>{{ stat.food__foodtype }}</td>
+                                        <td>{{ stat.count }}</td>
+                                        <td>{{ stat.food__recommend }}</td>
+                                        <td>
+                                            <a href="{% url 'myhome_fooddetail' stat.food__id %}"
+                                               class="btn btn-primary">查看详情</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- end page-content-wrapper -->
+    </div>
+
+
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    2020 © Xoric.
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-right d-none d-sm-block">
+                        Copyright &copy; 2022.Company name All rights reserved.<a target="_blank"
+                                                                                  href="https://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+    <script type="text/javascript">
+        // 获取传递到前端的用户创建时间数据
+        var userCreationStats = {{ user_data.user_creation_stats|safe }};
+
+        // 格式化数据以符合ECharts的格式
+        var chartData = userCreationStats.map(function (item) {
+            // 确保 item.day 是标准的日期字符串，例如 '2024-10-11'
+            var formattedDate = item.day;  // 后端已经是 YYYY-MM-DD 格式，无需再用 Date 对象
+            return {
+                name: formattedDate,
+                value: item.count
+            };
+        });
+
+        // 初始化ECharts实例
+        var chart = echarts.init(document.getElementById('userCreationChart'));
+
+        // 环形图的配置项
+        var option = {
+            color: ['#8BC34A', '#FFC107', '#03A9F4', '#E91E63', '#FF5722', '#9C27B0', '#009688'],  // 自定义颜色方案，与 Chartist 保持一致
+            title: {
+                text: '用户创建时间占比',
+                left: 'center',
+                textStyle: {
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    color: '#333'
+                }
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b}: {c} ({d}%)'  // 显示数据名称、值和百分比
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                textStyle: {
+                    fontSize: 12,
+                    color: '#333'
+                }
+            },
+            series: [
+                {
+                    name: '用户创建时间',
+                    type: 'pie',
+                    radius: ['40%', '70%'],  // 环形图的内外径比例
+                    avoidLabelOverlap: false,
+                    label: {
+                        show: false,  // 隐藏默认标签
+                        position: 'center'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,  // 鼠标悬停时显示标签
+                            fontSize: '18',
+                            fontWeight: 'bold',
+                            formatter: '{b}\n{c} ({d}%)'  // 在悬停时显示详细信息
+                        }
+                    },
+                    labelLine: {
+                        show: false  // 隐藏默认标签线
+                    },
+                    data: chartData
+                }
+            ]
+        };
+
+        // 使用配置项生成图表
+        chart.setOption(option);
+    </script>
+
+
+{% endblock %}

@@ -1,0 +1,353 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+
+
+    <div class="page-content">
+
+        <!-- Page-Title -->
+        <div class="page-title-box">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 class="page-title mb-1">数据可视化</h4>
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">首页</a></li>
+                            <li class="breadcrumb-item active">可视化</li>
+                        </ol>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        <div class="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="header-title mb-4">不同类型餐饮数量分布饼状图</h4>
+
+                                <div id="echarts1" class="apex-charts" dir="ltr" style="height: 600px"></div>
+                            </div>
+                        </div><!--end card-->
+                    </div>
+
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="header-title mb-4">不同作者发布数量分布直方图</h4>
+
+                                <div id="echarts2" class="apex-charts" dir="ltr" style="height: 600px"></div>
+                            </div>
+                        </div><!--end card-->
+                    </div>
+                </div>
+                <!-- end row -->
+
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="header-title mb-4">评论人数Top20</h4>
+
+                                <div id="echarts3" class="apex-charts" dir="ltr" style="height: 600px"></div>
+                            </div>
+                        </div><!--end card-->
+                    </div>
+
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="header-title mb-4">收藏人数Top20</h4>
+
+                                <div id="echarts4" class="apex-charts" dir="ltr" style="height: 600px"></div>
+                            </div>
+                        </div><!--end card-->
+                    </div>
+                </div>
+
+                <!-- end row -->
+
+            </div>
+            <!-- end container-fluid -->
+        </div>
+        <!-- end page-content-wrapper -->
+    </div>
+    <!-- End Page-content -->
+
+
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    2020 © Xoric.
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-right d-none d-sm-block">
+                        Copyright &copy; 2022.Company name All rights reserved.<a target="_blank"
+                                                                                  href="https://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        // 饼图 - 餐饮数量分布
+        var dom = document.getElementById("echarts1");
+        var myChart = echarts.init(dom);
+
+        var option = {
+            backgroundColor: '#F9F9F9',
+
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+            series: [
+                {
+                    name: '餐饮数量',
+                    type: 'pie',
+                    radius: '60%',
+                    center: ['50%', '60%'],
+                    data: [{% for item in cate_obj %}
+                        {value: {{item.cates_num}}, name: '{{item.cates_list}}'},
+                    {% endfor %}],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    },
+                    itemStyle: {
+                        color: function (params) {
+                            var colors = ['#00a7e1', '#eff2f7', '#3ddc97', '#3051d3'];
+                            return colors[params.dataIndex % colors.length];
+                        }
+                    }
+                }
+            ]
+        };
+
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+
+        dom = document.getElementById("echarts2");
+        myChart = echarts.init(dom);
+
+        option = {
+            backgroundColor: '#F9F9F9',
+
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '3%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: {{ authors.1|safe }},
+                axisLabel: {
+                    textStyle: {
+                        color: '#333'
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#333'  // 深灰色X轴
+                    }
+                }
+            },
+            yAxis: {
+                name: '数量',
+                type: 'value',
+                boundaryGap: [0, 0.01],
+                axisLine: {
+                    lineStyle: {
+                        color: '#333'  // 深灰色Y轴
+                    }
+                }
+            },
+            series: [
+                {
+                    type: 'line',
+                    data: {{ authors.0 }},
+                    areaStyle: {
+                        color: '#00a7e1'  // 保持与直方图一致的颜色
+                    },
+                    lineStyle: {
+                        color: '#00a7e1'  // 保持线条颜色一致
+                    },
+                    itemStyle: {
+                        color: '#00a7e1'  // 保持点的颜色一致
+                    },
+                    barWidth: '40%',
+                }
+            ]
+        };
+
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+
+        // 柱状图 - 评论人数Top20
+        var chartDom = document.getElementById('echarts3');
+        var myChart = echarts.init(chartDom);
+
+        option = {
+            backgroundColor: '#F9F9F9',
+
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['评论人数']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    dataView: {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar']},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: {{ comment.1|safe }},
+                axisLine: {
+                    lineStyle: {
+                        color: '#333'
+                    }
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#333'
+                    }
+                }
+            },
+            yAxis: {
+                type: 'value',
+                axisLine: {
+                    lineStyle: {
+                        color: '#333'
+                    }
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#333'
+                    }
+                }
+            },
+            series: [
+                {
+                    name: '评论人数',
+                    type: 'bar',
+                    data: {{ comment.0 }},
+                    itemStyle: {
+                        color: '#3ddc97'
+                    },
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: 'Max'},
+                            {type: 'min', name: 'Min'}
+                        ]
+                    },
+                    markLine: {
+                        data: [{type: 'average', name: 'Avg'}]
+                    }
+                }
+            ]
+        };
+
+        option && myChart.setOption(option);
+
+        // 柱状图 - 收藏人数Top20
+        var chartDom = document.getElementById('echarts4');
+        var myChart = echarts.init(chartDom);
+
+        option = {
+            backgroundColor: '#F9F9F9',
+
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['收藏人数']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    dataView: {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar']},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: {{ collect.1|safe }},
+                axisLine: {
+                    lineStyle: {
+                        color: '#333'
+                    }
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#333'
+                    }
+                }
+            },
+            yAxis: {
+                type: 'value',
+                axisLine: {
+                    lineStyle: {
+                        color: '#333'
+                    }
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#333'
+                    }
+                }
+            },
+            series: [
+                {
+                    name: '收藏人数',
+                    type: 'bar',
+                    data: {{ collect.0 }},
+                    itemStyle: {
+                        color: '#3051d3'
+                    },
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: 'Max'},
+                            {type: 'min', name: 'Min'}
+                        ]
+                    },
+                    markLine: {
+                        data: [{type: 'average', name: 'Avg'}]
+                    }
+                }
+            ]
+        };
+
+        option && myChart.setOption(option);
+
+    </script>
+
+{% endblock %}

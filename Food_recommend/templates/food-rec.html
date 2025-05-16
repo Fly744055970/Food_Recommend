@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div class="page-content">
+
+        <!-- Page-Title -->
+        <div class="page-title-box">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 class="page-title mb-1">美食推荐</h4>
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="/myhome/index/">主页</a></li>
+                            <li class="breadcrumb-item active">美食推荐</li>
+                        </ol>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- product-main-area-start -->
+        <div class="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-10" style="margin: 0 auto; width: 80%;">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="header-title mb-4">美食推荐</h5>
+                                <table class="table table-centered">
+                                    <thead>
+                                    <tr>
+                                        <th>美食图片</th>
+                                        <th>美食名称</th>
+                                        <th>类型</th>
+                                        <th>推荐语</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for food in food_details %}
+                                        <tr>
+                                            <td>
+                                                <img src="{{ food.imgurl }}" alt="{{ food.foodname }}" width="80">
+                                            </td>
+                                            <td>{{ food.foodname }}</td>
+                                            <td>{{ food.foodtype }}</td>
+                                            <td>{{ food.recommend }}</td>
+                                            <td>
+                                                <a href="{% url 'myhome_fooddetail' food.id %}"
+                                                   class="btn btn-primary">查看详情</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- product-main-area-end -->
+        </div>
+
+
+{% endblock %}

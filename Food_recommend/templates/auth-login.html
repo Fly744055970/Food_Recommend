@@ -1,0 +1,143 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap Css -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <!-- Icons Css -->
+    <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css">
+    <!-- App Css-->
+    <link href="{% static 'css/app.min.css' %}" rel="stylesheet" type="text/css">
+</head>
+
+<body class="bg-primary bg-pattern">
+<div class="home-btn d-none d-sm-block">
+    {#    <a href="{% url 'home' %}"><i class="mdi mdi-home-variant h2 text-white"></i></a>#}
+    <a href=""><i class="mdi mdi-home-variant h2 text-white"></i></a>
+</div>
+
+<div class="account-pages my-5 pt-sm-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="text-center mb-5">
+                    <h2 class="font-size-48 text-white font-weight-bold mb-4">美食推荐系统</h2>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- end row -->
+
+        <div class="row justify-content-center">
+            <div class="col-xl-5 col-sm-8">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <div class="p-2">
+                            <h5 class="mb-5 text-center">登录</h5>
+                            <form method="post" id="login-form">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-custom mb-4">
+                                            <input type="text" class="form-control" id="id_username" required=""
+                                                   placeholder="用户名">
+                                        </div>
+
+                                        <div class="form-group form-group-custom mb-4">
+                                            <input type="password" class="form-control" id="id_password" required=""
+                                                   placeholder="密码">
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                           id="customControlInline">
+                                                    <label class="custom-control-label" for="customControlInline">Remember
+                                                        me</label>
+                                                </div>
+                                            </div>
+                                            {#                                            <div class="col-md-6">#}
+                                            {#                                                <div class="text-md-right mt-3 mt-md-0">#}
+                                            {#                                                    <a href="{% url 'password_reset' %}" class="text-muted"><i#}
+                                            {#                                                            class="mdi mdi-lock"></i> wangji?</a>#}
+                                            {#                                                </div>#}
+                                            {#                                            </div>#}
+                                        </div>
+
+                                        <div class="mt-4">
+                                            <button class="btn btn-success btn-block waves-effect waves-light"
+                                                    type="submit">登录
+                                            </button>
+                                        </div>
+                                        <div class="mt-4 text-center">
+                                            <a href="{% url 'register' %}" class="text-muted"><i
+                                                    class="mdi mdi-account-circle mr-1"></i> 现在去注册</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+<!-- end Account pages -->
+
+<!-- JAVASCRIPT -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/metisMenu.min.js' %}"></script>
+<script src="{% static 'js/simplebar.min.js' %}"></script>
+<script src="{% static 'js/waves.min.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#login-form').on('submit', function (event) {
+            event.preventDefault();
+            var username = $('#id_username').val();
+            var password = $('#id_password').val();
+
+            if (username === '' || password === '') {
+                alert('用户名和密码不能为空');
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/myhome/login/',
+                data: {
+                    username: username,
+                    password: password,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function (data) {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        alert('登录成功');
+                        window.location.href = '/myhome/index';  // 登录成功后跳转到仪表盘页面
+                    }
+                },
+                error: function () {
+                    alert('网络错误，请稍后重试');
+                }
+            });
+        });
+    });
+</script>
+
+<script src="{% static 'js/bundle.js' %}"></script>
+<script src="{% static 'js/app.js' %}"></script>
+
+</body>
+</html>
